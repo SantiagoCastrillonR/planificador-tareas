@@ -1,3 +1,5 @@
+const taskManager = new TaskManager();
+console.log(taskManager.tasks);
 
 const formulario = document.querySelector('#formulario-tareas');
 
@@ -47,4 +49,32 @@ formulario.addEventListener('submit', function(evento) {
         
         formulario.reset();
     }
+});
+
+
+const botonesToggle = document.querySelectorAll('.btn-toggle');
+
+botonesToggle.forEach(boton => {
+    boton.addEventListener('click', function() {
+        const tarjeta = this.closest('.card');
+        const badge = tarjeta.querySelector('.badge');
+        
+        tarjeta.classList.toggle('border-success');
+        tarjeta.classList.toggle('border-secondary-subtle');
+        tarjeta.classList.toggle('bg-success-subtle');
+        
+        if(tarjeta.classList.contains('border-success')) {
+            this.textContent = "Desmarcar";
+            this.classList.replace('btn-outline-success', 'btn-secondary');
+            
+            badge.textContent = "Completado";
+            badge.className = "badge bg-success";
+        } else {
+            this.textContent = "Marcar";
+            this.classList.replace('btn-secondary', 'btn-outline-success');
+            
+            badge.textContent = "Pendiente";
+            badge.className = "badge bg-warning text-dark";
+        }
+    });
 });
