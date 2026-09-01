@@ -1,11 +1,9 @@
-// 1. Inicializar, cargar y renderizar tareas al iniciar la página
 const taskManager = new TaskManager();
 taskManager.load();
 taskManager.render();
 
 const formulario = document.querySelector('#formulario-tareas');
 
-// Función de validación original
 function validFormFieldInput(data) {
     const { nombre, descripcion, fecha, estado } = data;
     if (nombre.trim() === '' || descripcion.trim() === '' || fecha === '' || estado === '') {
@@ -14,7 +12,6 @@ function validFormFieldInput(data) {
     return true; 
 }
 
-// Evento principal del formulario
 formulario.addEventListener('submit', function(evento) {
     evento.preventDefault();
 
@@ -34,10 +31,7 @@ formulario.addEventListener('submit', function(evento) {
             confirmButtonColor: '#dc3545'
         });
     } else {
-        // Enviar datos validados a la clase TaskManager
         taskManager.addTask(nombre, descripcion, fecha, estado);
-        
-        // Actualizar la pantalla con la nueva tarea
         taskManager.render();
 
         Swal.fire({
@@ -54,6 +48,7 @@ formulario.addEventListener('submit', function(evento) {
 });
 
 document.querySelector('#lista-tareas').addEventListener('click', function(evento) {
+    // Lógica para Marcar / Desmarcar
     if (evento.target.classList.contains('btn-toggle')) {
         const boton = evento.target;
         const tarjeta = boton.closest('.card');
@@ -74,5 +69,15 @@ document.querySelector('#lista-tareas').addEventListener('click', function(event
             badge.textContent = "PENDIENTE";
             badge.className = "badge bg-warning text-dark";
         }
+    }
+
+    // Lógica para Eliminar
+    if (evento.target.classList.contains('delete-button')) {
+        const parentTask = evento.target.closest('[data-task-id]');
+        const taskId = Number(parentTask.dataset.taskId);
+        
+        taskManager.deleteTask(taskId);
+        taskManager.save();
+        taskManager.render();
     }
 });

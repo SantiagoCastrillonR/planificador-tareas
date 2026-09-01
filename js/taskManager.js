@@ -12,11 +12,20 @@ class TaskManager {
             name: name,
             description: description,
             dueDate: dueDate,
-            status: 'PORHACER' // Según los requerimientos de la tarea
+            status: 'PORHACER' 
         });
 
-        // Guardar automáticamente en el Local Storage
         this.save();
+    }
+
+    deleteTask(taskId) {
+        const newTasks = [];
+        for (let task of this.tasks) {
+            if (task.id !== taskId) {
+                newTasks.push(task);
+            }
+        }
+        this.tasks = newTasks;
     }
 
     save() {
@@ -43,7 +52,6 @@ class TaskManager {
         let tareasHtml = '';
 
         this.tasks.forEach(tarea => {
-            // Se utiliza la plantilla literal de Bootstrap que diseñaste
             tareasHtml += `
                 <div class="col-12 col-lg-6" data-task-id="${tarea.id}">
                     <div class="card h-100 shadow-sm border-secondary-subtle">
@@ -57,7 +65,7 @@ class TaskManager {
                                 <small class="text-muted fw-semibold">📅 ${tarea.dueDate}</small>
                                 <div>
                                     <button class="btn btn-sm btn-outline-success btn-toggle">Marcar</button>
-                                    <button class="btn btn-sm btn-outline-danger">Eliminar</button>
+                                    <button class="btn btn-sm btn-outline-danger delete-button">Eliminar</button>
                                 </div>
                             </div>
                         </div>
@@ -66,7 +74,6 @@ class TaskManager {
             `;
         });
 
-        // Inyectar el HTML generado en el contenedor de tareas
         document.querySelector('#lista-tareas').innerHTML = tareasHtml;
     }
 }
