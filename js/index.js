@@ -1,19 +1,21 @@
+// 1. Inicializar, cargar y renderizar tareas al iniciar la página
 const taskManager = new TaskManager();
-console.log(taskManager.tasks);
+taskManager.load();
+taskManager.render();
 
 const formulario = document.querySelector('#formulario-tareas');
 
+// Función de validación original
 function validFormFieldInput(data) {
     const { nombre, descripcion, fecha, estado } = data;
-
     if (nombre.trim() === '' || descripcion.trim() === '' || fecha === '' || estado === '') {
         return false; 
     }
     return true; 
 }
 
+// Evento principal del formulario
 formulario.addEventListener('submit', function(evento) {
-    // Prevenir que la página se recargue
     evento.preventDefault();
 
     const nombre = document.querySelector('#nombreTarea').value;
@@ -21,13 +23,7 @@ formulario.addEventListener('submit', function(evento) {
     const fecha = document.querySelector('#fechaTarea').value;
     const estado = document.querySelector('#estadoTarea').value;
 
-    console.log("name: " + nombre);
-    console.log("description: " + descripcion);
-    console.log("date: " + fecha);
-    console.log("status: " + estado);
-
     const datosTarea = { nombre, descripcion, fecha, estado };
-
     const esValido = validFormFieldInput(datosTarea);
 
     if (!esValido) {
@@ -38,10 +34,16 @@ formulario.addEventListener('submit', function(evento) {
             confirmButtonColor: '#dc3545'
         });
     } else {
+        // Enviar datos validados a la clase TaskManager
+        taskManager.addTask(nombre, descripcion, fecha, estado);
+        
+        // Actualizar la pantalla con la nueva tarea
+        taskManager.render();
+
         Swal.fire({
             icon: 'success',
             title: '¡Tarea válida!',
-            text: 'La tarea ha sido validada correctamente.',
+            text: 'La tarea ha sido registrada correctamente.',
             confirmButtonColor: '#198754',
             timer: 2000,
             showConfirmButton: false
@@ -51,30 +53,26 @@ formulario.addEventListener('submit', function(evento) {
     }
 });
 
-
-const botonesToggle = document.querySelectorAll('.btn-toggle');
-
-botonesToggle.forEach(boton => {
-    boton.addEventListener('click', function() {
-        const tarjeta = this.closest('.card');
+document.querySelector('#lista-tareas').addEventListener('click', function(evento) {
+    if (evento.target.classList.contains('btn-toggle')) {
+        const boton = evento.target;
+        const tarjeta = boton.closest('.card');
         const badge = tarjeta.querySelector('.badge');
         
         tarjeta.classList.toggle('border-success');
         tarjeta.classList.toggle('border-secondary-subtle');
         tarjeta.classList.toggle('bg-success-subtle');
         
-        if(tarjeta.classList.contains('border-success')) {
-            this.textContent = "Desmarcar";
-            this.classList.replace('btn-outline-success', 'btn-secondary');
-            
-            badge.textContent = "Completado";
+        if (tarjeta.classList.contains('border-success')) {
+            boton.textContent = "Desmarcar";
+            boton.classList.replace('btn-outline-success', 'btn-secondary');
+            badge.textContent = "COMPLETADO";
             badge.className = "badge bg-success";
         } else {
-            this.textContent = "Marcar";
-            this.classList.replace('btn-secondary', 'btn-outline-success');
-            
-            badge.textContent = "Pendiente";
+            boton.textContent = "Marcar";
+            boton.classList.replace('btn-secondary', 'btn-outline-success');
+            badge.textContent = "PENDIENTE";
             badge.className = "badge bg-warning text-dark";
         }
-    });
+    }
 });
