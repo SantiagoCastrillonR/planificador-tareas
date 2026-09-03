@@ -13,3 +13,10 @@ https://www.figma.com/design/pGUimLEssNlAo41ZUeKdsJ/Planificador-de-tareas?node-
 
 ## 4. Demo 
 https://santiagocastrillonr.github.io/planificador-tareas/
+
+
+# Planificador de Tareas - Sprint 2 
+
+## Demo 
+https://santiagocastrillonr.github.io/planificador-tareas/
+
