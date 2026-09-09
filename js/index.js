@@ -1,5 +1,30 @@
 const taskManager = new TaskManager();
 taskManager.load();
+
+// Inyección de tareas de ejemplo si la lista está vacía
+if (taskManager.tasks.length === 0) {
+    taskManager.addTask(
+        'Terminar Sprint 1', 
+        'Diseñar la Tarjeta de Tarea y la Lista de Tareas usando clases de Bootstrap.', 
+        '2026-09-15', 
+        'completado'
+    );
+    
+    taskManager.addTask(
+        'Revisar Repositorio', 
+        'Verificar que todos los commits de la semana estén integrados en la rama principal.', 
+        '2026-09-18', 
+        'en_progreso'
+    );
+
+    taskManager.addTask(
+        'Practicar JavaScript', 
+        'Repasar lógica de programación, arreglos y manipulación del DOM.', 
+        '2026-09-20', 
+        'pendiente'
+    );
+}
+
 taskManager.render();
 
 const formulario = document.querySelector('#formulario-tareas');
@@ -48,36 +73,27 @@ formulario.addEventListener('submit', function(evento) {
 });
 
 document.querySelector('#lista-tareas').addEventListener('click', function(evento) {
-    // Lógica para Marcar / Desmarcar
+    
     if (evento.target.classList.contains('btn-toggle')) {
-        const boton = evento.target;
-        const tarjeta = boton.closest('.card');
-        const badge = tarjeta.querySelector('.badge');
+        const parentTask = evento.target.closest('[data-task-id]');
+        const taskId = Number(parentTask.dataset.taskId);
         
-        tarjeta.classList.toggle('border-success');
-        tarjeta.classList.toggle('border-secondary-subtle');
-        tarjeta.classList.toggle('bg-success-subtle');
+        const currentTask = taskManager.tasks.find(t => t.id === taskId);
         
-        if (tarjeta.classList.contains('border-success')) {
-            boton.textContent = "Desmarcar";
-            boton.classList.replace('btn-outline-success', 'btn-secondary');
-            badge.textContent = "COMPLETADO";
-            badge.className = "badge bg-success";
+        if (currentTask.status === 'completado') {
+            taskManager.updateTaskStatus(taskId, 'pendiente');
         } else {
-            boton.textContent = "Marcar";
-            boton.classList.replace('btn-secondary', 'btn-outline-success');
-            badge.textContent = "PENDIENTE";
-            badge.className = "badge bg-warning text-dark";
+            taskManager.updateTaskStatus(taskId, 'completado');
         }
+        
+        taskManager.render();
     }
 
-    // Lógica para Eliminar
     if (evento.target.classList.contains('delete-button')) {
         const parentTask = evento.target.closest('[data-task-id]');
         const taskId = Number(parentTask.dataset.taskId);
         
         taskManager.deleteTask(taskId);
-        taskManager.save();
         taskManager.render();
     }
 });
