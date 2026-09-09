@@ -4,15 +4,18 @@ class TaskManager {
         this.currentId = currentId;
     }
 
-    addTask(name, description, dueDate, status) {
+    // NUEVO: Recibe startDate y dueDate (o "Sin fecha límite")
+    addTask(name, description, startDate, dueDate, status, category) {
         this.currentId++;
         
         this.tasks.push({
             id: this.currentId,
             name: name,
             description: description,
-            dueDate: dueDate,
-            status: status
+            startDate: startDate || 'No definida',
+            dueDate: dueDate || 'Sin fecha límite',
+            status: status,
+            category: category || 'General'
         });
 
         this.save();
@@ -27,6 +30,14 @@ class TaskManager {
         const taskIndex = this.tasks.findIndex(task => task.id === taskId);
         if (taskIndex !== -1) {
             this.tasks[taskIndex].status = newStatus;
+            this.save();
+        }
+    }
+
+    updateTaskFull(id, updatedData) {
+        const index = this.tasks.findIndex(task => task.id === id);
+        if (index !== -1) {
+            this.tasks[index] = { ...this.tasks[index], ...updatedData };
             this.save();
         }
     }
@@ -51,10 +62,15 @@ class TaskManager {
         }
     }
 
-    render() {
+    render(filter = 'todas') {
         let tareasHtml = '';
 
-        this.tasks.forEach(tarea => {
+        let tareasARenderizar = this.tasks;
+        if (filter !== 'todas') {
+            tareasARenderizar = this.tasks.filter(tarea => tarea.status === filter);
+        }
+
+        tareasARenderizar.forEach(tarea => {
             const isCompleted = tarea.status === 'completado';
             
             const badgeClass = isCompleted ? 'bg-success' : (tarea.status === 'en_progreso' ? 'bg-info text-dark' : 'bg-warning text-dark');
@@ -68,14 +84,24 @@ class TaskManager {
                     <div class="card h-100 shadow-sm ${borderClass}">
                         <div class="card-body d-flex flex-column">
                             <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h3 class="h6 card-title fw-bold mb-0">${tarea.name}</h3>
+                                <div>
+                                    <span class="badge bg-light text-success border border-success-subtle mb-1">${tarea.category}</span>
+                                    <h3 class="h6 card-title fw-bold mb-0">${tarea.name}</h3>
+                                </div>
                                 <span class="badge ${badgeClass}">${badgeText}</span>
                             </div>
                             <p class="card-text text-secondary small mb-3">${tarea.description}</p>
-                            <div class="d-flex justify-content-between align-items-center mt-auto">
-                                <small class="text-muted fw-semibold">📅 ${tarea.dueDate}</small>
-                                <div>
+                            
+                            <!-- NUEVO: Mostrar tanto fecha de inicio como límite en la tarjeta -->
+                            <div class="mb-3 small text-muted">
+                                <div>🚀 <strong>Inicio:</strong> ${tarea.startDate}</div>
+                                <div>🏁 <strong>Límite:</strong> ${tarea.dueDate}</div>
+                            </div>
+
+                            <div class="d-flex justify-content-end align-items-center mt-auto">
+                                <div class="btn-group">
                                     <button class="btn btn-sm ${btnToggleClass} btn-toggle">${btnToggleText}</button>
+                                    <button class="btn btn-sm btn-outline-primary edit-button">Editar</button>
                                     <button class="btn btn-sm btn-outline-danger delete-button">Eliminar</button>
                                 </div>
                             </div>

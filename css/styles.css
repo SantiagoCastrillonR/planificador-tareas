@@ -1,0 +1,100 @@
+/* =========================================
+   PALETA Y ESTILOS GENERALES (SOFT GREEN)
+   ========================================= */
+:root {
+    --soft-green-bg: #f3f9f5;
+    --soft-green-card: #ffffff;
+    --soft-green-border: #d4edda;
+    --soft-green-btn: #3a8b50;
+    --soft-green-btn-hover: #2d6a3d;
+    --soft-green-text: #1e4b2a;
+    --soft-green-shadow: rgba(58, 139, 80, 0.08);
+}
+
+body.bg-light {
+    background-color: var(--soft-green-bg) !important;
+    color: var(--soft-green-text);
+}
+
+.card {
+    border-color: var(--soft-green-border) !important;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--soft-green-shadow) !important;
+}
+
+.btn-success {
+    background-color: var(--soft-green-btn);
+    border-color: var(--soft-green-btn);
+}
+
+.btn-success:hover {
+    background-color: var(--soft-green-btn-hover);
+    border-color: var(--soft-green-btn-hover);
+}
+
+.btn-outline-success {
+    color: var(--soft-green-btn);
+    border-color: var(--soft-green-btn);
+}
+
+.btn-outline-success:hover, .btn-outline-success.active {
+    background-color: var(--soft-green-btn);
+    color: white;
+}
+
+/* =========================================
+   ESTILOS PERSONALIZADOS PARA LOS BOTONES
+   ========================================= */
+.card .btn-sm {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+    font-weight: 500;
+}
+
+.card .btn-sm:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.btn-toggle {
+    background-color: transparent;
+    border: 1.5px solid #3a8b50;
+    color: #3a8b50;
+}
+.btn-toggle:hover {
+    background-color: #3a8b50;
+    color: #ffffff;
+}
+.btn-toggle.btn-secondary {
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+    color: #ffffff !important;
+}
+.btn-toggle.btn-secondary:hover {
+    background-color: #5a6268 !important;
+    border-color: #545b62 !important;
+}
+
+.edit-button {
+    background-color: transparent;
+    border: 1.5px solid #457b9d;
+    color: #457b9d;
+}
+.edit-button:hover {
+    background-color: #457b9d;
+    color: #ffffff;
+    border-color: #457b9d;
+}
+
+.delete-button {
+    background-color: transparent;
+    border: 1.5px solid #d9534f;
+    color: #d9534f;
+}
+.delete-button:hover {
+    background-color: #d9534f;
+    color: #ffffff;
+    border-color: #d9534f;
+}
