@@ -4,14 +4,14 @@ class TaskManager {
         this.currentId = currentId;
     }
 
-    // NUEVO: Recibe startDate y dueDate (o "Sin fecha límite")
+    // Método para agregar tareas con categoría, fechas de inicio y límite
     addTask(name, description, startDate, dueDate, status, category) {
         this.currentId++;
         
         this.tasks.push({
             id: this.currentId,
             name: name,
-            description: description,
+            description: description || 'Sin descripción',
             startDate: startDate || 'No definida',
             dueDate: dueDate || 'Sin fecha límite',
             status: status,
@@ -62,6 +62,7 @@ class TaskManager {
         }
     }
 
+    // Renderiza las tarjetas de tareas 
     render(filter = 'todas') {
         let tareasHtml = '';
 
@@ -72,12 +73,14 @@ class TaskManager {
 
         tareasARenderizar.forEach(tarea => {
             const isCompleted = tarea.status === 'completado';
+            const isInProgress = tarea.status === 'en_progreso';
             
-            const badgeClass = isCompleted ? 'bg-success' : (tarea.status === 'en_progreso' ? 'bg-info text-dark' : 'bg-warning text-dark');
-            const badgeText = isCompleted ? 'COMPLETADO' : (tarea.status === 'en_progreso' ? 'EN PROGRESO' : 'PENDIENTE');
+            const badgeClass = isCompleted ? 'bg-success' : (isInProgress ? 'bg-info text-dark' : 'bg-warning text-dark');
+            const badgeText = isCompleted ? 'COMPLETADO' : (isInProgress ? 'EN PROGRESO' : 'PENDIENTE');
             const borderClass = isCompleted ? 'border-success bg-success-subtle' : 'border-secondary-subtle';
+            
             const btnToggleClass = isCompleted ? 'btn-secondary' : 'btn-outline-success';
-            const btnToggleText = isCompleted ? 'Desmarcar' : 'Marcar';
+            const btnToggleText = isCompleted ? 'Desmarcar' : 'Completar';
 
             tareasHtml += `
                 <div class="col-12 col-lg-6" data-task-id="${tarea.id}">
@@ -92,17 +95,18 @@ class TaskManager {
                             </div>
                             <p class="card-text text-secondary small mb-3">${tarea.description}</p>
                             
-                            <!-- NUEVO: Mostrar tanto fecha de inicio como límite en la tarjeta -->
                             <div class="mb-3 small text-muted">
-                                <div>🚀 <strong>Inicio:</strong> ${tarea.startDate}</div>
-                                <div>🏁 <strong>Límite:</strong> ${tarea.dueDate}</div>
+                                <div> ● <strong>Inicio:</strong> ${tarea.startDate}</div>
+                                <div> ● <strong>Límite:</strong> ${tarea.dueDate}</div>
                             </div>
 
-                            <div class="d-flex justify-content-end align-items-center mt-auto">
-                                <div class="btn-group">
-                                    <button class="btn btn-sm ${btnToggleClass} btn-toggle">${btnToggleText}</button>
-                                    <button class="btn btn-sm btn-outline-primary edit-button">Editar</button>
-                                    <button class="btn btn-sm btn-outline-danger delete-button">Eliminar</button>
+                            <!-- Botones de acción centrados horizontalmente -->
+                            <div class="d-flex justify-content-center align-items-center mt-auto">
+                                <div class="btn-group gap-1 flex-wrap justify-content-center">
+                                    <button class="btn btn-sm btn-toggle ${btnToggleClass}">${btnToggleText}</button>
+                                    <button class="btn btn-sm btn-progress">Progreso</button>
+                                    <button class="btn btn-sm edit-button">Editar</button>
+                                    <button class="btn btn-sm delete-button">Borrar</button>
                                 </div>
                             </div>
                         </div>

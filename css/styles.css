@@ -1,6 +1,5 @@
-/* =========================================
-   PALETA Y ESTILOS GENERALES (SOFT GREEN)
-   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Poppins:wght@500;600;700&family=Quicksand:wght@400;500;600&display=swap');
+
 :root {
     --soft-green-bg: #f3f9f5;
     --soft-green-card: #ffffff;
@@ -9,17 +8,79 @@
     --soft-green-btn-hover: #2d6a3d;
     --soft-green-text: #1e4b2a;
     --soft-green-shadow: rgba(58, 139, 80, 0.08);
+    --body-bg: var(--soft-green-bg);
+    --card-bg: #ffffff;
+    --text-color: var(--soft-green-text);
+    --text-muted-color: #6c757d;
+    --calendar-day-bg: #fafdfb;
+    --calendar-border: #e2e8f0;
+    --header-bg: #ffffff;
+}
+
+/* MODO OSCURO  */
+body.dark-mode {
+    --soft-green-bg: #121a14;
+    --soft-green-card: #1b261e;
+    --soft-green-border: #2a3d2e;
+    --soft-green-btn: #4eaf68;
+    --soft-green-btn-hover: #3d8d53;
+    --soft-green-text: #d8f3dc;
+    --soft-green-shadow: rgba(0, 0, 0, 0.3);
+    --body-bg: #121a14;
+    --card-bg: #1b261e;
+    --text-color: #d8f3dc;
+    --text-muted-color: #a3b899;
+    --calendar-day-bg: #162118;
+    --calendar-border: #2d3f31;
+    --header-bg: #1b261e; 
+}
+
+body, input, textarea, select, button {
+    font-family: 'Quicksand', sans-serif; /* Para inputs y textos generales */
+}
+
+h1, h2, h3, h4, h5, h6, .card-title, .modal-title {
+    font-family: 'Poppins', sans-serif; /* Para títulos y encabezados principales */
+}
+
+.btn, .task-tab-btn, .badge {
+    font-family: 'Montserrat', sans-serif; /* Para botones y elementos interactivos */
 }
 
 body.bg-light {
-    background-color: var(--soft-green-bg) !important;
-    color: var(--soft-green-text);
+    background-color: var(--body-bg) !important;
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .card {
+    background-color: var(--card-bg) !important;
     border-color: var(--soft-green-border) !important;
     border-radius: 12px;
     box-shadow: 0 4px 12px var(--soft-green-shadow) !important;
+    color: var(--text-color);
+}
+
+/* Ajuste para que las fechas dentro de las tarjetas se pongan blancas en modo oscuro */
+body.dark-mode .card .text-muted {
+    color: #ffffff !important;
+}
+
+.form-control, .form-select {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border-color: var(--soft-green-border) !important;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+}
+
+header {
+    background-color: var(--header-bg) !important;
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .btn-success {
@@ -42,59 +103,174 @@ body.bg-light {
     color: white;
 }
 
-/* =========================================
-   ESTILOS PERSONALIZADOS PARA LOS BOTONES
-   ========================================= */
+/* BOTONES DE TARJETA */
 .card .btn-sm {
-    padding: 0.35rem 0.75rem;
-    font-size: 0.85rem;
-    border-radius: 8px;
+    padding: 0.35rem 0.65rem;
+    font-size: 0.8rem;
+    border-radius: 6px;
     transition: all 0.2s ease-in-out;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .card .btn-sm:hover {
     transform: translateY(-1px);
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06);
 }
 
 .btn-toggle {
     background-color: transparent;
-    border: 1.5px solid #3a8b50;
-    color: #3a8b50;
+    border: 1.5px solid #2d6a3d;
+    color: #2d6a3d;
 }
 .btn-toggle:hover {
-    background-color: #3a8b50;
+    background-color: #2d6a3d;
     color: #ffffff;
 }
 .btn-toggle.btn-secondary {
-    background-color: #6c757d !important;
-    border-color: #6c757d !important;
+    background-color: #52796f !important;
+    border-color: #52796f !important;
     color: #ffffff !important;
 }
-.btn-toggle.btn-secondary:hover {
-    background-color: #5a6268 !important;
-    border-color: #545b62 !important;
+
+.btn-progress {
+    background-color: transparent;
+    border: 1.5px solid #52b788;
+    color: #40916c;
+}
+.btn-progress:hover {
+    background-color: #52b788;
+    color: #ffffff;
 }
 
 .edit-button {
     background-color: transparent;
-    border: 1.5px solid #457b9d;
-    color: #457b9d;
+    border: 1.5px solid #74c69d;
+    color: #52796f;
 }
 .edit-button:hover {
-    background-color: #457b9d;
+    background-color: #74c69d;
     color: #ffffff;
-    border-color: #457b9d;
 }
 
 .delete-button {
     background-color: transparent;
-    border: 1.5px solid #d9534f;
-    color: #d9534f;
+    border: 1.5px solid #95d5b2;
+    color: #2d6a3d;
 }
 .delete-button:hover {
-    background-color: #d9534f;
+    background-color: #b7e4c7;
+    color: #1b4332;
+    border-color: #b7e4c7;
+}
+
+/* Mini Calendario  */
+.card .card-body:has(#miniCalendarioGrid) {
+    padding: 0.85rem !important;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px !important;
+    max-width: 280px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.calendar-day-header {
+    font-size: 0.7rem !important;
+    font-weight: bold;
+    color: var(--text-color);
+    padding-bottom: 2px !important;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem !important;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: var(--calendar-day-bg);
+    border: 1px solid var(--calendar-border);
+    color: var(--text-color);
+    transition: all 0.15s ease;
+    position: relative;
+}
+
+.calendar-day:hover {
+    background-color: var(--soft-green-border);
+}
+
+.calendar-day.selected {
+    background-color: var(--soft-green-btn) !important;
+    color: white !important;
+    font-weight: bold;
+}
+
+.calendar-day.has-task::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    width: 3px;
+    height: 3px;
+    background-color: #e63946;
+    border-radius: 50%;
+}
+
+/* Pestañas */
+.task-tabs {
+    background-color: var(--card-bg);
+    padding: 6px;
+    border-radius: 50rem;
+    box-shadow: 0 2px 8px var(--soft-green-shadow);
+    border: 1px solid var(--soft-green-border);
+    display: inline-flex;
+    gap: 4px;
+}
+
+.task-tab-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-color);
+    border-radius: 50rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.task-tab-btn:hover {
+    background-color: var(--soft-green-bg);
+}
+
+.task-tab-btn.active {
+    background-color: var(--soft-green-btn) !important;
+    color: #ffffff !important;
+}
+
+.task-tab-btn .badge-counter {
+    background-color: rgba(0, 0, 0, 0.08);
+    color: inherit;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 50rem;
+    font-weight: 700;
+}
+body.dark-mode .task-tab-btn .badge-counter {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+.task-tab-btn.active .badge-counter {
+    background-color: rgba(255, 255, 255, 0.25);
     color: #ffffff;
-    border-color: #d9534f;
+}
+
+.modal-content {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color);
 }

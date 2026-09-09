@@ -10,29 +10,44 @@
     <link rel="stylesheet" href="./css/styles.css">
 </head>
 
-<body class="bg-light">
+<body class="bg-light d-flex flex-column min-vh-100">
 
-    <header class="bg-white py-3 mb-3 shadow-sm">
-        <div class="container">
-            <h1 class="h4 text-center mb-1 fw-bold">Planificador de Tareas</h1>
+    <header class="py-3 mb-3 shadow-sm position-relative">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div style="width: 40px;"></div>
+            <h1 class="h4 text-center mb-0 fw-bold">Planificador de Tareas</h1>
+            <button id="darkModeToggle"
+                class="btn btn-sm btn-outline-success rounded-circle p-2 d-flex align-items-center justify-content-center"
+                title="Cambiar modo oscuro" style="width: 38px; height: 38px; font-size: 1rem;">
+                ○
+            </button>
         </div>
     </header>
 
-    <div class="container mb-4">
-        <div class="d-flex justify-content-center gap-2 flex-wrap">
-            <button class="btn btn-outline-success filter-btn active" data-filter="todas">Todas</button>
-            <button class="btn btn-outline-success filter-btn" data-filter="pendiente">Por Hacer</button>
-            <button class="btn btn-outline-success filter-btn" data-filter="en_progreso">En Progreso</button>
-            <button class="btn btn-outline-success filter-btn" data-filter="completado">Terminadas</button>
+    <!-- Pestañas con contadores -->
+    <div class="container mb-4 text-center">
+        <div class="task-tabs d-inline-flex flex-wrap justify-content-center">
+            <button class="task-tab-btn active" data-filter="todas">
+                Todas <span class="badge-counter" id="count-todas">0</span>
+            </button>
+            <button class="task-tab-btn" data-filter="pendiente">
+                Por Hacer <span class="badge-counter" id="count-pendiente">0</span>
+            </button>
+            <button class="task-tab-btn" data-filter="en_progreso">
+                En Progreso <span class="badge-counter" id="count-en_progreso">0</span>
+            </button>
+            <button class="task-tab-btn" data-filter="completado">
+                Terminadas <span class="badge-counter" id="count-completado">0</span>
+            </button>
         </div>
     </div>
 
-    <main class="container">
+    <main class="container flex-grow-1">
         <div class="row">
 
-            <!-- Lado izquierdo: Formulario -->
+            <!-- Lado izquierdo -->
             <div class="col-md-4 mb-4">
-                <div class="card shadow-sm">
+                <div class="card shadow-sm mb-4">
                     <div class="card-body">
                         <h2 class="h5 card-title mb-3 fw-bold">Nueva Tarea</h2>
 
@@ -40,54 +55,12 @@
                             <div class="mb-3">
                                 <label for="nombreTarea" class="form-label text-secondary">Nombre de la Tarea</label>
                                 <input type="text" class="form-control border-secondary-subtle" id="nombreTarea"
-                                    placeholder="Ej. Terminar Sprint 1">
+                                    placeholder="Ej. Terminar Sprint 1" required>
                             </div>
 
                             <div class="mb-3">
-                                <label for="descripcionTarea" class="form-label text-secondary">Descripción</label>
-                                <textarea class="form-control border-secondary-subtle" id="descripcionTarea" rows="3"
-                                    placeholder="Añade detalles aquí..."></textarea>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="categoriaTarea" class="form-label text-secondary">Categoría</label>
-                                <select class="form-select border-secondary-subtle" id="categoriaTarea">
-                                    <option value="" selected disabled>Selecciona una categoría...</option>
-                                    <option value="Trabajo">Trabajo</option>
-                                    <option value="Estudio">Estudio</option>
-                                    <option value="Personal">Personal</option>
-                                    <option value="Hogar">Hogar</option>
-                                    <option value="Otro">Otro</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-3 d-none" id="contenedorOtraCategoria">
-                                <label for="otraCategoria" class="form-label text-secondary">Especifica la categoría</label>
-                                <input type="text" class="form-control border-secondary-subtle" id="otraCategoria" placeholder="Nombre de la categoría">
-                            </div>
-
-
-                            <div class="mb-3">
-                                <label for="fechaInicioTarea" class="form-label text-secondary">Fecha de inicio</label>
-                                <input type="date" class="form-control border-secondary-subtle" id="fechaInicioTarea">
-                            </div>
-
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <label for="fechaLimiteTarea" class="form-label text-secondary mb-0">Fecha límite</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="sinFechaLimite">
-                                        <label class="form-check-label small text-muted" for="sinFechaLimite">
-                                            Sin fecha límite
-                                        </label>
-                                    </div>
-                                </div>
-                                <input type="date" class="form-control border-secondary-subtle" id="fechaLimiteTarea">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="estadoTarea" class="form-label text-secondary">Estado</label>
-                                <select class="form-select border-secondary-subtle" id="estadoTarea">
+                                <label for="estadoTarea" class="form-label text-secondary">Estado inicial</label>
+                                <select class="form-select border-secondary-subtle" id="estadoTarea" required>
                                     <option value="" selected disabled>Selecciona un estado...</option>
                                     <option value="pendiente">Pendiente</option>
                                     <option value="en_progreso">En Progreso</option>
@@ -95,21 +68,91 @@
                                 </select>
                             </div>
 
+                            <!-- Sección colapsable que se despliega -->
+                            <div id="seccion-colapsable" class="collapse">
+                                <div class="mb-3">
+                                    <label for="descripcionTarea" class="form-label text-secondary">Descripción</label>
+                                    <textarea class="form-control border-secondary-subtle" id="descripcionTarea"
+                                        rows="2" placeholder="Añade detalles aquí..."></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="categoriaTarea" class="form-label text-secondary">Categoría</label>
+                                    <select class="form-select border-secondary-subtle" id="categoriaTarea">
+                                        <option value="Trabajo">Trabajo</option>
+                                        <option value="Estudio">Estudio</option>
+                                        <option value="Personal">Personal</option>
+                                        <option value="Hogar">Hogar</option>
+                                        <option value="Otro">Otro</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3 d-none" id="contenedorOtraCategoria">
+                                    <label for="otraCategoria" class="form-label text-secondary">Especifica la
+                                        categoría</label>
+                                    <input type="text" class="form-control border-secondary-subtle" id="otraCategoria">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="fechaInicioTarea" class="form-label text-secondary">Fecha de
+                                        inicio</label>
+                                    <input type="date" class="form-control border-secondary-subtle"
+                                        id="fechaInicioTarea">
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <label for="fechaLimiteTarea" class="form-label text-secondary mb-0">Fecha
+                                            límite</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="sinFechaLimite">
+                                            <label class="form-check-label small text-muted" for="sinFechaLimite">Sin
+                                                límite</label>
+                                        </div>
+                                    </div>
+                                    <input type="date" class="form-control border-secondary-subtle"
+                                        id="fechaLimiteTarea">
+                                </div>
+                            </div>
+
                             <button type="submit" class="btn btn-success w-100 fw-bold mt-2">
-                                Agregar
+                                Agregar Tarea
                             </button>
                         </form>
                     </div>
                 </div>
+
+                <!-- Calendario -->
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h3 class="h6 fw-bold mb-0 text-success" id="mesAnioLabel">Calendario</h3>
+                            <div>
+                                <button class="btn btn-sm btn-outline-success py-0 px-2" id="mesAnterior">&lt;</button>
+                                <button class="btn btn-sm btn-outline-success py-0 px-2" id="mesSiguiente">&gt;</button>
+                            </div>
+                        </div>
+
+                        <div class="calendar-grid mb-3" id="miniCalendarioGrid"></div>
+
+                        <div class="border-top pt-2">
+                            <h4 class="small fw-bold text-secondary mb-1" id="tituloDiaSeleccionado">Tareas del día:
+                            </h4>
+                            <div id="tareas-del-dia">
+                                <p class="small text-muted text-center fst-italic mb-0">Haz clic en un día para ver sus
+                                    tareas.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Lado derecho: Lista de tareas -->
+            <!-- Lado derecho -->
             <div class="col-md-8">
                 <div class="card shadow-sm bg-transparent border-0">
                     <div class="card-body p-2">
                         <h2 class="h5 mb-3 fw-bold">Mis Tareas</h2>
-                        <div id="lista-tareas" class="row g-3">
-                        </div>
+                        <div id="lista-tareas" class="row g-3"></div>
                     </div>
                 </div>
             </div>
@@ -117,6 +160,7 @@
         </div>
     </main>
 
+    <!-- Modal de Edición Completa -->
     <div class="modal fade" id="modalEditar" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow">
@@ -127,16 +171,15 @@
                 <div class="modal-body">
                     <form id="form-editar-tarea">
                         <input type="hidden" id="editTaskId">
-                        
+
                         <div class="mb-3">
                             <label class="form-label text-secondary">Nombre de la Tarea</label>
                             <input type="text" class="form-control" id="editNombreTarea" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label text-secondary">Descripción</label>
-                            <textarea class="form-control" id="editDescripcionTarea" rows="3" required></textarea>
+                            <textarea class="form-control" id="editDescripcionTarea" rows="2" required></textarea>
                         </div>
-                        
                         <div class="mb-3">
                             <label class="form-label text-secondary">Categoría</label>
                             <select class="form-select" id="editCategoriaTarea">
@@ -151,25 +194,21 @@
                             <label class="form-label text-secondary">Especifica la categoría</label>
                             <input type="text" class="form-control" id="editOtraCategoria">
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label text-secondary">Fecha de inicio</label>
                             <input type="date" class="form-control" id="editFechaInicioTarea">
                         </div>
-
                         <div class="mb-3">
                             <div class="d-flex justify-content-between align-items-center mb-1">
                                 <label class="form-label text-secondary mb-0">Fecha límite</label>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="editSinFechaLimite">
-                                    <label class="form-check-label small text-muted" for="editSinFechaLimite">
-                                        Sin fecha límite
-                                    </label>
+                                    <label class="form-check-label small text-muted" for="editSinFechaLimite">Sin
+                                        límite</label>
                                 </div>
                             </div>
                             <input type="date" class="form-control" id="editFechaLimiteTarea">
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label text-secondary">Estado</label>
                             <select class="form-select" id="editEstadoTarea" required>
@@ -187,9 +226,15 @@
         </div>
     </div>
 
+    <!-- Footer  -->
+    <footer class="text-center py-3 mt-4 border-top text-muted small">
+        <div class="container">
+            @ Hecho por Santiago Castrillón • 2026
+        </div>
+    </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script src="./js/taskManager.js"></script>
     <script src="./js/index.js"></script>
 </body>
