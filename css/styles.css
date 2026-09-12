@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Poppins:wght@500;600;700&family=Quicksand:wght@400;500;600&display=swap');
 
+
 :root {
     --soft-green-bg: #f3f9f5;
     --soft-green-card: #ffffff;
@@ -8,6 +9,7 @@
     --soft-green-btn-hover: #2d6a3d;
     --soft-green-text: #1e4b2a;
     --soft-green-shadow: rgba(58, 139, 80, 0.08);
+
     --body-bg: var(--soft-green-bg);
     --card-bg: #ffffff;
     --text-color: var(--soft-green-text);
@@ -17,7 +19,8 @@
     --header-bg: #ffffff;
 }
 
-/* MODO OSCURO  */
+
+/* =VARIABLES MODO OSCURO */
 body.dark-mode {
     --soft-green-bg: #121a14;
     --soft-green-card: #1b261e;
@@ -26,33 +29,36 @@ body.dark-mode {
     --soft-green-btn-hover: #3d8d53;
     --soft-green-text: #d8f3dc;
     --soft-green-shadow: rgba(0, 0, 0, 0.3);
+
     --body-bg: #121a14;
     --card-bg: #1b261e;
     --text-color: #d8f3dc;
     --text-muted-color: #a3b899;
     --calendar-day-bg: #162118;
     --calendar-border: #2d3f31;
-    --header-bg: #1b261e; 
+    --header-bg: #1b261e;
 }
 
 body, input, textarea, select, button {
-    font-family: 'Quicksand', sans-serif; /* Para inputs y textos generales */
+    font-family: 'Quicksand', sans-serif; /* Textos generales e inputs */
 }
 
 h1, h2, h3, h4, h5, h6, .card-title, .modal-title {
-    font-family: 'Poppins', sans-serif; /* Para títulos y encabezados principales */
+    font-family: 'Poppins', sans-serif; /* Títulos y encabezados */
 }
 
 .btn, .task-tab-btn, .badge {
-    font-family: 'Montserrat', sans-serif; /* Para botones y elementos interactivos */
+    font-family: 'Montserrat', sans-serif; /* Botones y elementos interactivos */
 }
 
 body.bg-light {
     background-color: var(--body-bg) !important;
     color: var(--text-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease; /* transición suave al cambiar de modo */
 }
 
+
+/* TARJETAS  */
 .card {
     background-color: var(--card-bg) !important;
     border-color: var(--soft-green-border) !important;
@@ -61,11 +67,13 @@ body.bg-light {
     color: var(--text-color);
 }
 
-/* Ajuste para que las fechas dentro de las tarjetas se pongan blancas en modo oscuro */
+/* modo oscuro fechas */
 body.dark-mode .card .text-muted {
     color: #ffffff !important;
 }
 
+
+/* CAMPOS DE FORMULARIO */
 .form-control, .form-select {
     background-color: var(--card-bg) !important;
     color: var(--text-color) !important;
@@ -77,12 +85,16 @@ body.dark-mode .card .text-muted {
     color: var(--text-color) !important;
 }
 
+
+/* HEADER */
 header {
     background-color: var(--header-bg) !important;
     color: var(--text-color);
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+
+/* Agregar Tarea */
 .btn-success {
     background-color: var(--soft-green-btn);
     border-color: var(--soft-green-btn);
@@ -93,6 +105,8 @@ header {
     border-color: var(--soft-green-btn-hover);
 }
 
+
+/* flechas del calendario */
 .btn-outline-success {
     color: var(--soft-green-btn);
     border-color: var(--soft-green-btn);
@@ -103,7 +117,8 @@ header {
     color: white;
 }
 
-/* BOTONES DE TARJETA */
+
+/* BOTONES TARJETA DE TAREA */
 .card .btn-sm {
     padding: 0.35rem 0.65rem;
     font-size: 0.8rem;
@@ -113,10 +128,11 @@ header {
 }
 
 .card .btn-sm:hover {
-    transform: translateY(-1px);
+    transform: translateY(-1px); /* pequeño efecto de "levantarse" al pasar el mouse */
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06);
 }
 
+/* Botón "Completar" / "Desmarcar" */
 .btn-toggle {
     background-color: transparent;
     border: 1.5px solid #2d6a3d;
@@ -126,12 +142,14 @@ header {
     background-color: #2d6a3d;
     color: #ffffff;
 }
+/* botón "Desmarcar" */
 .btn-toggle.btn-secondary {
     background-color: #52796f !important;
     border-color: #52796f !important;
     color: #ffffff !important;
 }
 
+/* Botón "Progreso" */
 .btn-progress {
     background-color: transparent;
     border: 1.5px solid #52b788;
@@ -142,6 +160,7 @@ header {
     color: #ffffff;
 }
 
+/* Botón "Editar" */
 .edit-button {
     background-color: transparent;
     border: 1.5px solid #74c69d;
@@ -152,6 +171,7 @@ header {
     color: #ffffff;
 }
 
+/* Botón "Borrar" */
 .delete-button {
     background-color: transparent;
     border: 1.5px solid #95d5b2;
@@ -163,7 +183,9 @@ header {
     border-color: #b7e4c7;
 }
 
-/* Mini Calendario  */
+
+/* CALENDARIO */
+
 .card .card-body:has(#miniCalendarioGrid) {
     padding: 0.85rem !important;
 }
@@ -177,6 +199,7 @@ header {
     text-align: center;
 }
 
+/* Lu, Ma, Mi, Ju, Vi, Sá, Do */
 .calendar-day-header {
     font-size: 0.7rem !important;
     font-weight: bold;
@@ -184,8 +207,9 @@ header {
     padding-bottom: 2px !important;
 }
 
+/* Cada casilla de día */
 .calendar-day {
-    aspect-ratio: 1;
+    aspect-ratio: 1; 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -197,13 +221,14 @@ header {
     border: 1px solid var(--calendar-border);
     color: var(--text-color);
     transition: all 0.15s ease;
-    position: relative;
+    position: relative; 
 }
 
 .calendar-day:hover {
     background-color: var(--soft-green-border);
 }
 
+/* Día actualmente seleccionado por el usuario */
 .calendar-day.selected {
     background-color: var(--soft-green-btn) !important;
     color: white !important;
@@ -220,11 +245,12 @@ header {
     border-radius: 50%;
 }
 
-/* Pestañas */
+
+/* PESTAÑAS DE FILTRO  */
 .task-tabs {
     background-color: var(--card-bg);
     padding: 6px;
-    border-radius: 50rem;
+    border-radius: 50rem; 
     box-shadow: 0 2px 8px var(--soft-green-shadow);
     border: 1px solid var(--soft-green-border);
     display: inline-flex;
@@ -249,11 +275,13 @@ header {
     background-color: var(--soft-green-bg);
 }
 
+/* Pestaña actualmente seleccionada */
 .task-tab-btn.active {
     background-color: var(--soft-green-btn) !important;
     color: #ffffff !important;
 }
 
+/* contador dentro de cada pestaña */
 .task-tab-btn .badge-counter {
     background-color: rgba(0, 0, 0, 0.08);
     color: inherit;
@@ -270,6 +298,8 @@ body.dark-mode .task-tab-btn .badge-counter {
     color: #ffffff;
 }
 
+
+/* Actualizar Tarea */
 .modal-content {
     background-color: var(--card-bg) !important;
     color: var(--text-color);

@@ -1,32 +1,33 @@
 const taskManager = new TaskManager();
 taskManager.load();
 
-// Tareas de ejemplo predeterminadas al iniciar por primera vez si no hay nada guardado
 if (taskManager.tasks.length === 0) {
     taskManager.addTask(
-        'Terminar Sprint 1', 
-        'Diseñar la Tarjeta de Tarea y la Lista de Tareas usando clases de Bootstrap.', 
-        '2026-09-10', 
-        '2026-09-15', 
+        'Terminar Sprint 1',
+        'Diseñar la Tarjeta de Tarea y la Lista de Tareas usando clases de Bootstrap.',
+        '2026-09-10',
+        '2026-09-15',
         'completado',
         'Estudio'
     );
-    
+
     taskManager.addTask(
-        'Revisar Repositorio', 
-        'Verificar que todos los commits de la semana estén integrados en la rama principal.', 
-        '2026-09-15', 
-        'Sin fecha límite', 
+        'Revisar Repositorio',
+        'Verificar que todos los commits de la semana estén integrados en la rama principal.',
+        '2026-09-15',
+        'Sin fecha límite',
         'en_progreso',
         'Trabajo'
     );
 }
+
 
 // MODO OSCURO 
 
 const darkModeToggle = document.querySelector('#darkModeToggle');
 const bodyElement = document.body;
 
+// Al cargar la página, revisamos si el usuario ya había activado el modo oscuro antes
 const savedDarkMode = localStorage.getItem('darkMode');
 if (savedDarkMode === 'enabled') {
     bodyElement.classList.add('dark-mode');
@@ -35,9 +36,9 @@ if (savedDarkMode === 'enabled') {
     darkModeToggle.textContent = '○'; 
 }
 
-darkModeToggle.addEventListener('click', function() {
+darkModeToggle.addEventListener('click', function () {
     bodyElement.classList.toggle('dark-mode');
-    
+
     if (bodyElement.classList.contains('dark-mode')) {
         localStorage.setItem('darkMode', 'enabled');
         darkModeToggle.textContent = '●';
@@ -47,7 +48,9 @@ darkModeToggle.addEventListener('click', function() {
     }
 });
 
-// Función para actualizar contadores
+
+// CONTADORES DE LAS PESTAÑAS 
+
 function actualizarContadores() {
     const total = taskManager.tasks.length;
     const pendientes = taskManager.tasks.filter(t => t.status === 'pendiente').length;
@@ -63,36 +66,43 @@ function actualizarContadores() {
 taskManager.render();
 actualizarContadores();
 
-// Formulario colapsable (se despliega al enfocar el nombre)
+
+// FORMULARIO COLAPSABLE
+
 const inputNombre = document.querySelector('#nombreTarea');
 const seccionColapsable = document.querySelector('#seccion-colapsable');
+
 let collapseInstance = new bootstrap.Collapse(seccionColapsable, { toggle: false });
 
-inputNombre.addEventListener('focus', function() {
+inputNombre.addEventListener('focus', function () {
     collapseInstance.show();
 });
 
-// Selector de categorías personalizadas 
+
+// CATEGORÍA PERSONALIZADA ("Otro") 
+
 const selectCategoria = document.querySelector('#categoriaTarea');
 const contenedorOtra = document.querySelector('#contenedorOtraCategoria');
 const inputOtra = document.querySelector('#otraCategoria');
 
-selectCategoria.addEventListener('change', function() {
+selectCategoria.addEventListener('change', function () {
     if (this.value === 'Otro') {
-        contenedorOtra.classList.remove('d-none');
+        contenedorOtra.classList.remove('d-none'); // mostrar el campo
         inputOtra.required = true;
     } else {
-        contenedorOtra.classList.add('d-none');
+        contenedorOtra.classList.add('d-none'); // ocultar el campo
         inputOtra.required = false;
         inputOtra.value = '';
     }
 });
 
-// Checkbox para manejar la opción de "Sin fecha límite"
+
+// CHECKBOX SIN FECHA LÍMITE
+
 const checkSinFecha = document.querySelector('#sinFechaLimite');
 const inputFechaLimite = document.querySelector('#fechaLimiteTarea');
 
-checkSinFecha.addEventListener('change', function() {
+checkSinFecha.addEventListener('change', function () {
     if (this.checked) {
         inputFechaLimite.value = '';
         inputFechaLimite.disabled = true;
@@ -102,20 +112,21 @@ checkSinFecha.addEventListener('change', function() {
 });
 
 
-// MINI CALENDARIO 
+// MINI CALENDARIO
 
-let fechaActualCalendario = new Date();
-let fechaSeleccionadaStr = null;
+let fechaActualCalendario = new Date(); 
+let fechaSeleccionadaStr = null;        
 
 function renderMiniCalendario() {
     const grid = document.querySelector('#miniCalendarioGrid');
     const labelMesAnio = document.querySelector('#mesAnioLabel');
-    grid.innerHTML = '';
+    grid.innerHTML = ''; 
 
     const anio = fechaActualCalendario.getFullYear();
     const mes = fechaActualCalendario.getMonth();
 
-    const nombresMeses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const nombresMeses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     labelMesAnio.textContent = `${nombresMeses[mes]} ${anio}`;
 
     const diasSemana = ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá', 'Do'];
@@ -128,9 +139,9 @@ function renderMiniCalendario() {
 
     const primerDiaMes = new Date(anio, mes, 1);
     let diaSemanaInicio = primerDiaMes.getDay() - 1;
-    if (diaSemanaInicio === -1) diaSemanaInicio = 6;
+    if (diaSemanaInicio === -1) diaSemanaInicio = 6; 
 
-    const ultimoDiaMes = new Date(anio, mes + 1, 0).getDate();
+    const ultimoDiaMes = new Date(anio, mes + 1, 0).getDate(); 
 
     for (let i = 0; i < diaSemanaInicio; i++) {
         const emptyDiv = document.createElement('div');
@@ -148,17 +159,18 @@ function renderMiniCalendario() {
 
         dayDiv.dataset.date = fechaStr;
 
-        // Verifica si el día tiene tareas asignadas 
+        // puntito rojo
         const tieneTareas = taskManager.tasks.some(t => t.dueDate === fechaStr || t.startDate === fechaStr);
         if (tieneTareas) {
             dayDiv.classList.add('has-task');
         }
 
+        // día seleccionado lo resaltamos
         if (fechaSeleccionadaStr === fechaStr) {
             dayDiv.classList.add('selected');
         }
 
-        dayDiv.addEventListener('click', function() {
+        dayDiv.addEventListener('click', function () {
             document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
             this.classList.add('selected');
             fechaSeleccionadaStr = this.dataset.date;
@@ -168,6 +180,8 @@ function renderMiniCalendario() {
         grid.appendChild(dayDiv);
     }
 }
+
+// tareas que empiezan o vencen en la fecha seleccionada.
 
 function mostrarTareasDelDia(fechaStr) {
     const contenedorTareasDelDia = document.querySelector('#tareas-del-dia');
@@ -197,24 +211,28 @@ function mostrarTareasDelDia(fechaStr) {
     contenedorTareasDelDia.innerHTML = htmlDia;
 }
 
-document.querySelector('#mesAnterior').addEventListener('click', function() {
+// Flechas para navegar entre meses
+document.querySelector('#mesAnterior').addEventListener('click', function () {
     fechaActualCalendario.setMonth(fechaActualCalendario.getMonth() - 1);
     renderMiniCalendario();
 });
 
-document.querySelector('#mesSiguiente').addEventListener('click', function() {
+document.querySelector('#mesSiguiente').addEventListener('click', function () {
     fechaActualCalendario.setMonth(fechaActualCalendario.getMonth() + 1);
     renderMiniCalendario();
 });
 
+// Dibujamos el calendario apenas carga la página
 renderMiniCalendario();
 
-// Controles para edición ("Otro" y "Sin fecha límite")
+
+// CATEGORÍA PERSONALIZADA Y "SIN FECHA LÍMITE" 
+
 const editSelectCategoria = document.querySelector('#editCategoriaTarea');
 const editContenedorOtra = document.querySelector('#editContenedorOtraCategoria');
 const editInputOtra = document.querySelector('#editOtraCategoria');
 
-editSelectCategoria.addEventListener('change', function() {
+editSelectCategoria.addEventListener('change', function () {
     if (this.value === 'Otro') {
         editContenedorOtra.classList.remove('d-none');
         editInputOtra.required = true;
@@ -228,7 +246,7 @@ editSelectCategoria.addEventListener('change', function() {
 const editCheckSinFecha = document.querySelector('#editSinFechaLimite');
 const editInputFechaLimite = document.querySelector('#editFechaLimiteTarea');
 
-editCheckSinFecha.addEventListener('change', function() {
+editCheckSinFecha.addEventListener('change', function () {
     if (this.checked) {
         editInputFechaLimite.value = '';
         editInputFechaLimite.disabled = true;
@@ -237,11 +255,13 @@ editCheckSinFecha.addEventListener('change', function() {
     }
 });
 
-// Envío del formulario principal para crear tareas
+
+// CREAR TAREA 
+
 const formulario = document.querySelector('#formulario-tareas');
 
-formulario.addEventListener('submit', function(evento) {
-    evento.preventDefault();
+formulario.addEventListener('submit', function (evento) {
+    evento.preventDefault(); // evita que la página se recargue al enviar el formulario
 
     const nombre = inputNombre.value;
     const descripcion = document.querySelector('#descripcionTarea').value;
@@ -249,12 +269,13 @@ formulario.addEventListener('submit', function(evento) {
     const sinFecha = checkSinFecha.checked;
     const fechaLimite = sinFecha ? 'Sin fecha límite' : inputFechaLimite.value;
     const estado = document.querySelector('#estadoTarea').value;
-    
+
     let categoria = selectCategoria.value;
     if (categoria === 'Otro') {
         categoria = inputOtra.value.trim();
     }
 
+    // Validación mínima: nombre y estado son obligatorios
     if (nombre.trim() === '' || estado === '') {
         Swal.fire({
             icon: 'error',
@@ -262,61 +283,70 @@ formulario.addEventListener('submit', function(evento) {
             text: 'Por favor, llena al menos el nombre y el estado de la tarea.',
             confirmButtonColor: '#dc3545'
         });
-    } else {
-        taskManager.addTask(nombre, descripcion, fechaInicio, fechaLimite, estado, categoria);
-        
-        const filtroActivo = document.querySelector('.task-tab-btn.active')?.dataset.filter || 'todas';
-        taskManager.render(filtroActivo);
-        actualizarContadores();
-        renderMiniCalendario();
-
-        Swal.fire({
-            icon: 'success',
-            title: '¡Registrada!',
-            text: 'La tarea ha sido guardada exitosamente.',
-            confirmButtonColor: '#3a8b50',
-            timer: 1500,
-            showConfirmButton: false
-        });
-        
-        formulario.reset();
-        collapseInstance.hide();
-        contenedorOtra.classList.add('d-none');
-        inputFechaLimite.disabled = false;
+        return; 
     }
+
+    // Todo bien: creamos la tarea y refrescamos la pantalla
+    taskManager.addTask(nombre, descripcion, fechaInicio, fechaLimite, estado, categoria);
+
+    const filtroActivo = document.querySelector('.task-tab-btn.active')?.dataset.filter || 'todas';
+    taskManager.render(filtroActivo);
+    actualizarContadores();
+    renderMiniCalendario();
+
+    Swal.fire({
+        icon: 'success',
+        title: '¡Registrada!',
+        text: 'La tarea ha sido guardada exitosamente.',
+        confirmButtonColor: '#3a8b50',
+        timer: 1500,
+        showConfirmButton: false
+    });
+
+    // Limpiamos el formulario y lo dejamos como al principio
+    formulario.reset();
+    collapseInstance.hide();
+    contenedorOtra.classList.add('d-none');
+    inputFechaLimite.disabled = false;
 });
 
-// Eventos de la lista general (Completar, En Progreso, Editar, Eliminar con SweetAlert2)
-document.querySelector('#lista-tareas').addEventListener('click', function(evento) {
+
+// ACCIONES SOBRE CADA TARJETA DE TAREA
+
+document.querySelector('#lista-tareas').addEventListener('click', function (evento) {
+
+    // Botón "Completar" / "Desmarcar" 
     if (evento.target.classList.contains('btn-toggle')) {
         const parentTask = evento.target.closest('[data-task-id]');
         const taskId = Number(parentTask.dataset.taskId);
         const currentTask = taskManager.tasks.find(t => t.id === taskId);
-        
+
         if (currentTask.status === 'completado') {
             taskManager.updateTaskStatus(taskId, 'pendiente');
         } else {
             taskManager.updateTaskStatus(taskId, 'completado');
         }
-        
+
         const filtroActivo = document.querySelector('.task-tab-btn.active').dataset.filter;
         taskManager.render(filtroActivo);
         actualizarContadores();
         renderMiniCalendario();
     }
 
+    // Botón "Progreso" 
     if (evento.target.classList.contains('btn-progress')) {
         const parentTask = evento.target.closest('[data-task-id]');
         const taskId = Number(parentTask.dataset.taskId);
-        
+
         taskManager.updateTaskStatus(taskId, 'en_progreso');
-        
+
         const filtroActivo = document.querySelector('.task-tab-btn.active').dataset.filter;
         taskManager.render(filtroActivo);
         actualizarContadores();
         renderMiniCalendario();
     }
 
+    // Botón "Editar" 
     if (evento.target.classList.contains('edit-button')) {
         const parentTask = evento.target.closest('[data-task-id]');
         const taskId = Number(parentTask.dataset.taskId);
@@ -326,7 +356,7 @@ document.querySelector('#lista-tareas').addEventListener('click', function(event
         document.querySelector('#editNombreTarea').value = task.name;
         document.querySelector('#editDescripcionTarea').value = task.description;
         document.querySelector('#editFechaInicioTarea').value = task.startDate !== 'No definida' ? task.startDate : '';
-        
+
         if (task.dueDate === 'Sin fecha límite') {
             editCheckSinFecha.checked = true;
             editInputFechaLimite.value = '';
@@ -339,6 +369,8 @@ document.querySelector('#lista-tareas').addEventListener('click', function(event
 
         document.querySelector('#editEstadoTarea').value = task.status;
 
+        // Si la categoría es una de las predefinidas, la seleccionamos normal.
+        // Si no (fue escrita manualmente con "Otro"), mostramos el campo de texto.
         const categoriasComunes = ['Trabajo', 'Estudio', 'Personal', 'Hogar'];
         if (categoriasComunes.includes(task.category)) {
             editSelectCategoria.value = task.category;
@@ -354,11 +386,12 @@ document.querySelector('#lista-tareas').addEventListener('click', function(event
         modal.show();
     }
 
+    // ---- Botón "Borrar" ----
+    // Pide confirmación antes de eliminar (usando SweetAlert2)
     if (evento.target.classList.contains('delete-button')) {
         const parentTask = evento.target.closest('[data-task-id]');
         const taskId = Number(parentTask.dataset.taskId);
-        
-        // Alerta de confirmación profesional con SweetAlert2 para eliminar tareas
+
         Swal.fire({
             title: '¿Estás seguro?',
             text: 'Esta acción eliminará la tarea permanentemente.',
@@ -369,8 +402,10 @@ document.querySelector('#lista-tareas').addEventListener('click', function(event
             confirmButtonText: 'Sí, eliminar',
             cancelButtonText: 'Cancelar'
         }).then((result) => {
+            // Solo eliminamos si el usuario confirmó en el cuadro de diálogo
             if (result.isConfirmed) {
                 taskManager.deleteTask(taskId);
+
                 const filtroActivo = document.querySelector('.task-tab-btn.active').dataset.filter;
                 taskManager.render(filtroActivo);
                 actualizarContadores();
@@ -388,23 +423,38 @@ document.querySelector('#lista-tareas').addEventListener('click', function(event
     }
 });
 
-// Manejo de eventos para las pestañas de filtro superiores
+
+/* ============================================================
+   11. PESTAÑAS DE FILTRO (Todas / Por Hacer / En Progreso / Terminadas)
+   Al hacer clic en una pestaña, se marca como activa y se
+   vuelve a dibujar la lista de tareas solo con las que
+   coincidan con ese filtro.
+============================================================ */
+
 document.querySelectorAll('.task-tab-btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
+    btn.addEventListener('click', function (e) {
         const targetBtn = e.currentTarget;
 
+        // Quitamos "active" de todas las pestañas y se lo damos solo a la que se clickeó
         document.querySelectorAll('.task-tab-btn').forEach(b => b.classList.remove('active'));
         targetBtn.classList.add('active');
-        
+
         const filtro = targetBtn.dataset.filter;
         taskManager.render(filtro);
     });
 });
 
-// Envío del formulario del modal de edición
-document.querySelector('#form-editar-tarea').addEventListener('submit', function(e) {
+
+/* ============================================================
+   12. GUARDAR CAMBIOS — Envío del formulario del modal de edición
+   Se ejecuta cuando el usuario hace clic en "Guardar Cambios"
+   dentro del modal. Actualiza la tarea con taskManager.updateTaskFull()
+   y refresca toda la pantalla.
+============================================================ */
+
+document.querySelector('#form-editar-tarea').addEventListener('submit', function (e) {
     e.preventDefault();
-    
+
     const id = Number(document.querySelector('#editTaskId').value);
     const name = document.querySelector('#editNombreTarea').value;
     const description = document.querySelector('#editDescripcionTarea').value;
@@ -412,19 +462,20 @@ document.querySelector('#form-editar-tarea').addEventListener('submit', function
     const sinFecha = editCheckSinFecha.checked;
     const dueDate = sinFecha ? 'Sin fecha límite' : editInputFechaLimite.value;
     const status = document.querySelector('#editEstadoTarea').value;
-    
+
     let category = editSelectCategoria.value;
     if (category === 'Otro') {
         category = editInputOtra.value.trim();
     }
 
     taskManager.updateTaskFull(id, { name, description, startDate, dueDate, status, category });
-    
+
     const filtroActivo = document.querySelector('.task-tab-btn.active').dataset.filter;
     taskManager.render(filtroActivo);
     actualizarContadores();
     renderMiniCalendario();
 
+    // Cerramos el modal después de guardar
     const modalElement = document.getElementById('modalEditar');
     const modalInstance = bootstrap.Modal.getInstance(modalElement);
     modalInstance.hide();

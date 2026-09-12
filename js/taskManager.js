@@ -1,13 +1,20 @@
+/*   - Guardarlas en memoria
+ *   - Agregar, editar, eliminar y cambiar su estado
+ *   - Guardarlas y cargarlas desde localStorage 
+ *   - renderizar las tarjetas de tareas en el HTML
+ */
 class TaskManager {
+
     constructor(currentId = 0) {
-        this.tasks = [];
-        this.currentId = currentId;
+        this.tasks = [];          // Aquí se guardan todas las tareas 
+        this.currentId = currentId; // Contador para generar IDs únicos
     }
 
-    // Método para agregar tareas con categoría, fechas de inicio y límite
+    // CREAR TAREA
+
     addTask(name, description, startDate, dueDate, status, category) {
-        this.currentId++;
-        
+        this.currentId++; // Cada tarea nueva tiene un ID diferente y único
+
         this.tasks.push({
             id: this.currentId,
             name: name,
@@ -21,39 +28,51 @@ class TaskManager {
         this.save();
     }
 
+    // ELIMINAR TAREA
+
     deleteTask(taskId) {
         this.tasks = this.tasks.filter(task => task.id !== taskId);
         this.save();
     }
 
+    // CAMBIAR SOLO EL ESTADO DE UNA TAREA
+
     updateTaskStatus(taskId, newStatus) {
         const taskIndex = this.tasks.findIndex(task => task.id === taskId);
-        if (taskIndex !== -1) {
+
+        if (taskIndex !== -1) { // -1 significa que no se encontró la tarea
             this.tasks[taskIndex].status = newStatus;
             this.save();
         }
     }
 
+    // EDITAR DATOS DE UNA TAREA 
+  
     updateTaskFull(id, updatedData) {
         const index = this.tasks.findIndex(task => task.id === id);
+
         if (index !== -1) {
             this.tasks[index] = { ...this.tasks[index], ...updatedData };
             this.save();
         }
     }
 
+    // GUARDAR EN localStorage 
     save() {
         const tasksJson = JSON.stringify(this.tasks);
         localStorage.setItem('tasks', tasksJson);
-        
+
         const currentIdJson = String(this.currentId);
         localStorage.setItem('currentId', currentIdJson);
     }
 
+
+    // CARGAR DESDE localStorage
+
     load() {
         if (localStorage.getItem('tasks')) {
             const tasksJson = localStorage.getItem('tasks');
-            this.tasks = JSON.parse(tasksJson);
+            this.tasks = JSON.parse(tasksJson); 
         }
 
         if (localStorage.getItem('currentId')) {
@@ -62,10 +81,12 @@ class TaskManager {
         }
     }
 
-    // Renderiza las tarjetas de tareas 
+    // RENDERIZAR LAS TARJETAS DE TAREAS EN PANTALLA
+
     render(filter = 'todas') {
         let tareasHtml = '';
 
+        // 1) Decidir qué mostrar según el filtro 
         let tareasARenderizar = this.tasks;
         if (filter !== 'todas') {
             tareasARenderizar = this.tasks.filter(tarea => tarea.status === filter);
@@ -74,11 +95,12 @@ class TaskManager {
         tareasARenderizar.forEach(tarea => {
             const isCompleted = tarea.status === 'completado';
             const isInProgress = tarea.status === 'en_progreso';
-            
+
+            // Estilos visuales según estado tarea
             const badgeClass = isCompleted ? 'bg-success' : (isInProgress ? 'bg-info text-dark' : 'bg-warning text-dark');
             const badgeText = isCompleted ? 'COMPLETADO' : (isInProgress ? 'EN PROGRESO' : 'PENDIENTE');
             const borderClass = isCompleted ? 'border-success bg-success-subtle' : 'border-secondary-subtle';
-            
+
             const btnToggleClass = isCompleted ? 'btn-secondary' : 'btn-outline-success';
             const btnToggleText = isCompleted ? 'Desmarcar' : 'Completar';
 
@@ -86,6 +108,7 @@ class TaskManager {
                 <div class="col-12 col-lg-6" data-task-id="${tarea.id}">
                     <div class="card h-100 shadow-sm ${borderClass}">
                         <div class="card-body d-flex flex-column">
+
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <div>
                                     <span class="badge bg-light text-success border border-success-subtle mb-1">${tarea.category}</span>
@@ -93,14 +116,17 @@ class TaskManager {
                                 </div>
                                 <span class="badge ${badgeClass}">${badgeText}</span>
                             </div>
+
                             <p class="card-text text-secondary small mb-3">${tarea.description}</p>
-                            
+
                             <div class="mb-3 small text-muted">
                                 <div> ● <strong>Inicio:</strong> ${tarea.startDate}</div>
                                 <div> ● <strong>Límite:</strong> ${tarea.dueDate}</div>
                             </div>
 
-                            <!-- Botones de acción centrados horizontalmente -->
+                            <!-- Botones de acción de cada tarjeta.
+                                 Los "clicks" de estos botones se escuchan
+                                 en index.js (delegación de eventos). -->
                             <div class="d-flex justify-content-center align-items-center mt-auto">
                                 <div class="btn-group gap-1 flex-wrap justify-content-center">
                                     <button class="btn btn-sm btn-toggle ${btnToggleClass}">${btnToggleText}</button>
@@ -109,6 +135,7 @@ class TaskManager {
                                     <button class="btn btn-sm delete-button">Borrar</button>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>

@@ -6,16 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planificador de Tareas</title>
 
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/styles.css">
 </head>
 
 <body class="bg-light d-flex flex-column min-vh-100">
 
+    <!-- HEADER -->
     <header class="py-3 mb-3 shadow-sm position-relative">
         <div class="container d-flex justify-content-between align-items-center">
+            <!-- Div vacío para "balancear" el header y centrar el título -->
             <div style="width: 40px;"></div>
+
             <h1 class="h4 text-center mb-0 fw-bold">Planificador de Tareas</h1>
+
+            <!-- Botón modo oscuro -->
             <button id="darkModeToggle"
                 class="btn btn-sm btn-outline-success rounded-circle p-2 d-flex align-items-center justify-content-center"
                 title="Cambiar modo oscuro" style="width: 38px; height: 38px; font-size: 1rem;">
@@ -24,7 +30,7 @@
         </div>
     </header>
 
-    <!-- Pestañas con contadores -->
+    <!-- PESTAÑAS DE FILTRO -->
     <div class="container mb-4 text-center">
         <div class="task-tabs d-inline-flex flex-wrap justify-content-center">
             <button class="task-tab-btn active" data-filter="todas">
@@ -45,19 +51,24 @@
     <main class="container flex-grow-1">
         <div class="row">
 
-            <!-- Lado izquierdo -->
+            <!-- IZQUIERDA -->
             <div class="col-md-4 mb-4">
+
+                <!-- Formulario "Nueva Tarea" -->
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
                         <h2 class="h5 card-title mb-3 fw-bold">Nueva Tarea</h2>
 
                         <form id="formulario-tareas">
+
+                            <!-- Campo obligatorio -->
                             <div class="mb-3">
                                 <label for="nombreTarea" class="form-label text-secondary">Nombre de la Tarea</label>
                                 <input type="text" class="form-control border-secondary-subtle" id="nombreTarea"
                                     placeholder="Ej. Terminar Sprint 1" required>
                             </div>
 
+                            <!-- Campo obligatorio -->
                             <div class="mb-3">
                                 <label for="estadoTarea" class="form-label text-secondary">Estado inicial</label>
                                 <select class="form-select border-secondary-subtle" id="estadoTarea" required>
@@ -68,8 +79,8 @@
                                 </select>
                             </div>
 
-                            <!-- Sección colapsable que se despliega -->
                             <div id="seccion-colapsable" class="collapse">
+
                                 <div class="mb-3">
                                     <label for="descripcionTarea" class="form-label text-secondary">Descripción</label>
                                     <textarea class="form-control border-secondary-subtle" id="descripcionTarea"
@@ -87,6 +98,7 @@
                                     </select>
                                 </div>
 
+                                <!-- campo Otro -->
                                 <div class="mb-3 d-none" id="contenedorOtraCategoria">
                                     <label for="otraCategoria" class="form-label text-secondary">Especifica la
                                         categoría</label>
@@ -104,6 +116,7 @@
                                     <div class="d-flex justify-content-between align-items-center mb-1">
                                         <label for="fechaLimiteTarea" class="form-label text-secondary mb-0">Fecha
                                             límite</label>
+                                        <!-- Checkbox para desactivar el campo de fecha límite -->
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="sinFechaLimite">
                                             <label class="form-check-label small text-muted" for="sinFechaLimite">Sin
@@ -113,6 +126,7 @@
                                     <input type="date" class="form-control border-secondary-subtle"
                                         id="fechaLimiteTarea">
                                 </div>
+
                             </div>
 
                             <button type="submit" class="btn btn-success w-100 fw-bold mt-2">
@@ -125,6 +139,7 @@
                 <!-- Calendario -->
                 <div class="card shadow-sm">
                     <div class="card-body">
+
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <h3 class="h6 fw-bold mb-0 text-success" id="mesAnioLabel">Calendario</h3>
                             <div>
@@ -143,11 +158,13 @@
                                     tareas.</p>
                             </div>
                         </div>
+
                     </div>
                 </div>
+
             </div>
 
-            <!-- Lado derecho -->
+            <!-- DERECHA -->
             <div class="col-md-8">
                 <div class="card shadow-sm bg-transparent border-0">
                     <div class="card-body p-2">
@@ -160,26 +177,31 @@
         </div>
     </main>
 
-    <!-- Modal de Edición Completa -->
+    <!-- Editar Tarea -->
     <div class="modal fade" id="modalEditar" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow">
+
                 <div class="modal-header bg-success-subtle border-0">
                     <h5 class="modal-title fw-bold text-success">Actualizar Tarea</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+
                 <div class="modal-body">
                     <form id="form-editar-tarea">
+                        <!-- guardar el ID tarea editada -->
                         <input type="hidden" id="editTaskId">
 
                         <div class="mb-3">
                             <label class="form-label text-secondary">Nombre de la Tarea</label>
                             <input type="text" class="form-control" id="editNombreTarea" required>
                         </div>
+
                         <div class="mb-3">
                             <label class="form-label text-secondary">Descripción</label>
                             <textarea class="form-control" id="editDescripcionTarea" rows="2" required></textarea>
                         </div>
+
                         <div class="mb-3">
                             <label class="form-label text-secondary">Categoría</label>
                             <select class="form-select" id="editCategoriaTarea">
@@ -190,14 +212,17 @@
                                 <option value="Otro">Otro</option>
                             </select>
                         </div>
+
                         <div class="mb-3 d-none" id="editContenedorOtraCategoria">
                             <label class="form-label text-secondary">Especifica la categoría</label>
                             <input type="text" class="form-control" id="editOtraCategoria">
                         </div>
+
                         <div class="mb-3">
                             <label class="form-label text-secondary">Fecha de inicio</label>
                             <input type="date" class="form-control" id="editFechaInicioTarea">
                         </div>
+
                         <div class="mb-3">
                             <div class="d-flex justify-content-between align-items-center mb-1">
                                 <label class="form-label text-secondary mb-0">Fecha límite</label>
@@ -209,6 +234,7 @@
                             </div>
                             <input type="date" class="form-control" id="editFechaLimiteTarea">
                         </div>
+
                         <div class="mb-3">
                             <label class="form-label text-secondary">Estado</label>
                             <select class="form-select" id="editEstadoTarea" required>
@@ -217,16 +243,18 @@
                                 <option value="completado">Completado</option>
                             </select>
                         </div>
+
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-success fw-bold">Guardar Cambios</button>
                         </div>
                     </form>
                 </div>
+
             </div>
         </div>
     </div>
 
-    <!-- Footer  -->
+    <!-- FOOTER -->
     <footer class="text-center py-3 mt-4 border-top text-muted small">
         <div class="container">
             @ Hecho por Santiago Castrillón • 2026
