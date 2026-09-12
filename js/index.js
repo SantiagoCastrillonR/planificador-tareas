@@ -21,7 +21,6 @@ if (taskManager.tasks.length === 0) {
     );
 }
 
-
 // MODO OSCURO 
 
 const darkModeToggle = document.querySelector('#darkModeToggle');
@@ -31,9 +30,9 @@ const bodyElement = document.body;
 const savedDarkMode = localStorage.getItem('darkMode');
 if (savedDarkMode === 'enabled') {
     bodyElement.classList.add('dark-mode');
-    darkModeToggle.textContent = '●'; 
+    darkModeToggle.textContent = '●';
 } else {
-    darkModeToggle.textContent = '○'; 
+    darkModeToggle.textContent = '○';
 }
 
 darkModeToggle.addEventListener('click', function () {
@@ -114,13 +113,13 @@ checkSinFecha.addEventListener('change', function () {
 
 // MINI CALENDARIO
 
-let fechaActualCalendario = new Date(); 
-let fechaSeleccionadaStr = null;        
+let fechaActualCalendario = new Date();
+let fechaSeleccionadaStr = null;
 
 function renderMiniCalendario() {
     const grid = document.querySelector('#miniCalendarioGrid');
     const labelMesAnio = document.querySelector('#mesAnioLabel');
-    grid.innerHTML = ''; 
+    grid.innerHTML = '';
 
     const anio = fechaActualCalendario.getFullYear();
     const mes = fechaActualCalendario.getMonth();
@@ -139,9 +138,9 @@ function renderMiniCalendario() {
 
     const primerDiaMes = new Date(anio, mes, 1);
     let diaSemanaInicio = primerDiaMes.getDay() - 1;
-    if (diaSemanaInicio === -1) diaSemanaInicio = 6; 
+    if (diaSemanaInicio === -1) diaSemanaInicio = 6;
 
-    const ultimoDiaMes = new Date(anio, mes + 1, 0).getDate(); 
+    const ultimoDiaMes = new Date(anio, mes + 1, 0).getDate();
 
     for (let i = 0; i < diaSemanaInicio; i++) {
         const emptyDiv = document.createElement('div');
@@ -283,7 +282,7 @@ formulario.addEventListener('submit', function (evento) {
             text: 'Por favor, llena al menos el nombre y el estado de la tarea.',
             confirmButtonColor: '#dc3545'
         });
-        return; 
+        return;
     }
 
     // Todo bien: creamos la tarea y refrescamos la pantalla
@@ -419,7 +418,6 @@ document.querySelector('#lista-tareas').addEventListener('click', function (even
     }
 });
 
-
 // PESTAÑAS DE FILTRO 
 
 document.querySelectorAll('.task-tab-btn').forEach(btn => {
@@ -434,7 +432,6 @@ document.querySelectorAll('.task-tab-btn').forEach(btn => {
         taskManager.render(filtro);
     });
 });
-
 
 // GUARDAR CAMBIOS
 
