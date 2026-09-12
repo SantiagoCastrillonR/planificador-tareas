@@ -369,8 +369,6 @@ document.querySelector('#lista-tareas').addEventListener('click', function (even
 
         document.querySelector('#editEstadoTarea').value = task.status;
 
-        // Si la categoría es una de las predefinidas, la seleccionamos normal.
-        // Si no (fue escrita manualmente con "Otro"), mostramos el campo de texto.
         const categoriasComunes = ['Trabajo', 'Estudio', 'Personal', 'Hogar'];
         if (categoriasComunes.includes(task.category)) {
             editSelectCategoria.value = task.category;
@@ -386,8 +384,7 @@ document.querySelector('#lista-tareas').addEventListener('click', function (even
         modal.show();
     }
 
-    // ---- Botón "Borrar" ----
-    // Pide confirmación antes de eliminar (usando SweetAlert2)
+    // Botón "Borrar"
     if (evento.target.classList.contains('delete-button')) {
         const parentTask = evento.target.closest('[data-task-id]');
         const taskId = Number(parentTask.dataset.taskId);
@@ -402,7 +399,6 @@ document.querySelector('#lista-tareas').addEventListener('click', function (even
             confirmButtonText: 'Sí, eliminar',
             cancelButtonText: 'Cancelar'
         }).then((result) => {
-            // Solo eliminamos si el usuario confirmó en el cuadro de diálogo
             if (result.isConfirmed) {
                 taskManager.deleteTask(taskId);
 
@@ -424,12 +420,7 @@ document.querySelector('#lista-tareas').addEventListener('click', function (even
 });
 
 
-/* ============================================================
-   11. PESTAÑAS DE FILTRO (Todas / Por Hacer / En Progreso / Terminadas)
-   Al hacer clic en una pestaña, se marca como activa y se
-   vuelve a dibujar la lista de tareas solo con las que
-   coincidan con ese filtro.
-============================================================ */
+// PESTAÑAS DE FILTRO 
 
 document.querySelectorAll('.task-tab-btn').forEach(btn => {
     btn.addEventListener('click', function (e) {
@@ -445,12 +436,7 @@ document.querySelectorAll('.task-tab-btn').forEach(btn => {
 });
 
 
-/* ============================================================
-   12. GUARDAR CAMBIOS — Envío del formulario del modal de edición
-   Se ejecuta cuando el usuario hace clic en "Guardar Cambios"
-   dentro del modal. Actualiza la tarea con taskManager.updateTaskFull()
-   y refresca toda la pantalla.
-============================================================ */
+// GUARDAR CAMBIOS
 
 document.querySelector('#form-editar-tarea').addEventListener('submit', function (e) {
     e.preventDefault();
